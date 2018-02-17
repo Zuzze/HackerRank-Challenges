@@ -60,6 +60,8 @@ function getGreatestCommonDivider(arr){
 function compareGCD(a, b){
     //Recursive Euclidean algorithm
     //https://en.wikipedia.org/wiki/Euclidean_algorithm
+    //divide previous divider always by previous remainder until you get 0
+    //the remainder before 0 is gcd
     if (b === 0){
         return a
     } else {
