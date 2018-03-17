@@ -5,12 +5,6 @@
 class BinaryCalculator {
     constructor() {
         this.screenText = ''   
-        this.operators = {
-            '+' : (a,b) => a+b,
-            '-' : (a,b) => a-b,
-            '*' : (a,b) => a*b,
-            '/' : (a,b) => (a-a%b)/b
-        }; 
     }
 
     //general click handler
@@ -64,7 +58,7 @@ class BinaryCalculator {
                 result = operand1/operand2;
                 break;
         }
-        
+
         //Result back to binary
         //numObj.tostring(radix=2)
         this.screenText = result.toString(2);    
