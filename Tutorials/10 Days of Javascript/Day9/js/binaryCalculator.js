@@ -1,4 +1,8 @@
-class Calculator {
+/**
+ * Calculates basic operations for two binary numbers
+ * In instructions result is used as part of the number after "=" sign is pressed unlike in normal calculators 
+ */
+class BinaryCalculator {
     constructor() {
         this.screenText = ''   
         this.operators = {
@@ -11,7 +15,6 @@ class Calculator {
 
     //general click handler
     click(event) {
-        console.log(event.target.id);
         let btnText = event.target.innerHTML;
         switch (btnText) {
             case 'C':
@@ -20,62 +23,66 @@ class Calculator {
             case '=':
                 this.equals();
                 break;
-            case '0':
-                if(this.screenText !== ''){
-                    btnText = '0';
-                }
-                break;
-            case '1':
-                btnText = '1';
-                break;
             default:
-                
-        }
-    this.updateScreen()
-        if (event.target.id === 'C') { 
-            
-        } else if (event.target.innerText === '=') {
-            this.equals(); 
-        } else if (event.target.innerText){
-            //chars that are added to screen: 0, 1, -, *, /, +
-            let btnText = event.target.innerText;
-            if(this.btnText == 0 || this.btnText){
-
-            }
-            let trailingnum = this.screenText[this.value.length-1];
-            
-
-            if (btnText == 1 || !Number.isNaN(trailingnum))
-                this.screenText += btnText;
-                console.log(this.value);
-        }
-       
+                this.addTextToScreen(btnText)
+        } 
     }
 
     clear() {
-        this.value = '';
+        this.screenText = '';
+        this.updateScreenHTML();
     }
 
+    /**Calculates operations with two binary numbers */
     equals() {
-        let exp = '+' + this.screenText;
-        let rex = /[^\d]\d+/g, parsed = [], m;
+        //1 or more (+) decimals (\d) globally (flag /g) to find all operand instances
+        //operands (=binary numbers) are put into a list using .match()
+        const operandRegex = /\d+/g
+        //operators "+", "-", "*", OR (|) "/"
+        //all of these except "-" requires escape character "\" because they have another meaning in regex
+        const operatorRegex = /(\+|-|\*|\/)/
         
-        while (m = rex.exec(exp)) {
-            parsed.push(m[0]);
+        //Operands to decimals from binary
+        //parseInt(number, radix=base=binary=2)
+        let operand1 = parseInt(res.innerHTML.match(operandRegex)[0],2);
+        let operand2 = parseInt(res.innerHTML.match(operandRegex)[1],2);
+
+        let operator = res.innerHTML.match(operatorRegex)[0];
+        
+        let result = "";
+        switch(operator){
+            case "+":
+            result = operand1+operand2; 
+                break;
+            case "-":
+                result = operand1-operand2;
+                break;
+            case "*":
+                result = operand1*operand2;
+                break;
+            case "/":
+                result = operand1/operand2;
+                break;
         }
         
-        let r = parsed.reduce((result, op) => {
-           let operator = op[0];
-           let operand = parseInt(op.substr(1), 2);
-           return this.operators[operator](result, operand);
-        }, 0);
-        
-        this.value = r.toString(2);
+        //Result back to binary
+        //numObj.tostring(radix=2)
+        this.screenText = result.toString(2);    
+        this.updateScreenHTML();
     }
 
-    updateScreen(text){
-        document.getElementById('res').innerHTML = text;
+    addTextToScreen(textToAdd){
+        if(textToAdd == '0' && this.screenText !== ''){
+            this.screenText += textToAdd;
+        } else {
+            this.screenText += textToAdd;
+        }
+        this.updateScreenHTML();
+    }
+
+    updateScreenHTML(){
+        document.getElementById('res').innerHTML = this.screenText;
     }
 }
 
-const calculator = new Calculator();
+const calculator = new BinaryCalculator();
